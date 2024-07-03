@@ -1,0 +1,51 @@
+# For this analysis, I downloaded Spotify data from Kaggle.
+# I created a table to insert Spotify data into SQLite, and uploaded the data.
+# Lastly, I analyzed the Spotify data using SQL. 
+
+
+# Creating the table:
+
+CREATE TABLE BIT_DB.Spotifydata (
+id integer PRIMARY KEY,
+artist_name varchar NOT NULL,
+track_name varchar NOT NULL,
+track_id varchar NOT NULL,
+popularity integer NOT NULL,
+danceability decimal(4,3) NOT NULL,
+energy decimal(4,3) NOT NULL,
+song_key integer NOT NULL,
+loudness decimal(5,3) NOT NULL,
+song_mode integer NOT NULL,
+speechiness decimal(5,4) NOT NULL,
+acousticness decimal(6,5) NOT NULL,
+instrumentalness decimal(8,7) NOT NULL,
+liveness decimal(5,4) NOT NULL,
+valence decimal(4,3) NOT NULL,
+tempo decimal(6,3) NOT NULL,
+duration_ms integer NOT NULL,
+time_signature integer NOT NULL )
+
+# After this, I imported the Spotify data in .csv format into the table.
+
+# I was then able to analyze some of the data using the following SQL queries:
+
+
+# 1. Which tracks have a popularity score greater than 90?
+
+SELECT artist_name, track_name, popularity
+FROM BIT_DB.Spotifydata
+WHERE popularity>90
+ORDER BY popularity desc;
+
+# 2. Which tracks have a time signature that is not 4?
+
+SELECT artist_name, track_name, time_signature
+FROM BIT_DB.Spotifydata
+WHERE time_signature <> 4
+ORDER BY artist_name asc;
+
+# 3. How many songs have a tempo above 110?
+
+SELECT COUNT(tempo)
+FROM BIT_DB.Spotifydata
+WHERE tempo>110;
