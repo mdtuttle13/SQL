@@ -1,0 +1,75 @@
+# For this project, I utilized a database with multiple tables to perform analytics on this data.
+
+
+ 
+ # 1. Create a list of customers, including full names, Customer IDs and Country for all customers not located in the USA.
+
+SELECT DISTINCT FirstName, LastName, CustomerId, Country
+FROM customers
+WHERE Country <> 'USA';
+
+
+# 2. Generate a list of invoices of customers from Brazil, including the customer's full name, invoice ID, invoice date and billing country.
+
+SELECT customers.FirstName, customers.LastName, invoices.Invoiceid, invoices.InvoiceDate, invoices.BillingCountry
+FROM customers
+INNER JOIN invoices
+ON customers.CustomerId = invoices.CustomerId
+WHERE invoices.BillingCountry = 'Brazil';
+
+
+# 3. Return a list of the employees that work in the IT department.
+
+SELECT FirstName, LastName, Title
+FROM employees
+WHERE Title LIKE 'IT%';
+
+
+# 4. Show the Invoice Total, Customer name, Country, and Sales Agent name for all invoices and customers.
+
+SELECT DISTINCT customers.FirstName, customers.LastName, SUM(invoices.Total), invoices.BillingCountry, employees.FirstName, employees.LastName
+FROM customers
+INNER JOIN invoices
+ON customers.CustomerId = invoices.CustomerId
+INNER JOIN employees
+ON customers.SupportRepID = employees.EmployeeId
+GROUP BY customers.LastName;
+
+
+# 5. Generate a list that includes the purchased track name AND artist name with each invoice ID.
+
+SELECT invoice_items.InvoiceId, albums.Title, artists.Name
+FROM invoice_items
+INNER JOIN tracks
+ON invoice_items.TrackId = tracks.TrackId
+INNER JOIN  albums
+ON tracks.AlbumId = albums.AlbumId
+INNER JOIN artists
+ON albums.ArtistId = artists.ArtistId;
+
+
+# 6. List all invoices for 2010, include full name, country, invoice total, and invoice date.
+
+SELECT FirstName, LastName, BillingCountry, Total, InvoiceDate
+FROM customers
+INNER JOIN invoices
+ON customers.CustomerId = invoices.CustomerId
+WHERE InvoiceDate LIKE '2010%'
+ORDER BY InvoiceDate;
+
+
+# 7. Determine how many times was each track downloaded.
+
+SELECT TrackId, Name, SUM(Quantity) AS total_downloads
+FROM invoice_items
+INNER JOIN tracks
+ON invoice_items.TrackId = tracks.TrackId
+GROUP BY tracks.TrackId, Name;
+
+
+# 8. List which employees report directly to the General Manager, including full names and job titles.
+
+SELECT LastName, FirstName, Title
+FROM employees
+WHERE ReportsTo = '1'
+ORDER BY LastName;
